@@ -12,26 +12,32 @@
 
 <style>
   :root {
-    --ink: #14181F;
-    --paper: #F5F3EC;
-    --paper-raised: #FCFBF7;
-    --signal: #2F6F4F;
-    --signal-soft: #E4EEE7;
-    --brick: #B14B34;
-    --slate: #5B6472;
-    --line: #DBD6C8;
+    --ink: #211A14;
+    --paper: #F6EFE3;
+    --paper-raised: #FBF6EC;
+    --signal: #1F6F54;
+    --signal-soft: #E3EEE8;
+    --brick: #7A2E3B;
+    --brick-soft: #F1E2E4;
+    --amber: #B4791F;
+    --amber-soft: #F6E9D2;
+    --slate: #6B5F51;
+    --line: #E1D5C1;
     --card: #FFFFFF;
   }
   html.dark {
-    --ink: #F2F0E8;
-    --paper: #14171D;
-    --paper-raised: #191D24;
-    --signal: #6FC79A;
-    --signal-soft: #1D2B24;
-    --brick: #E0846A;
-    --slate: #A2A9B4;
-    --line: #2B3038;
-    --card: #1B1F26;
+    --ink: #F3ECDF;
+    --paper: #15110C;
+    --paper-raised: #1C1610;
+    --signal: #4FBE96;
+    --signal-soft: #1E2C24;
+    --brick: #D9788A;
+    --brick-soft: #2B1D20;
+    --amber: #E7B463;
+    --amber-soft: #2B2013;
+    --slate: #AC9F8E;
+    --line: #2E271E;
+    --card: #1D1712;
   }
 
   * { scroll-behavior: smooth; }
@@ -51,12 +57,23 @@
 
   .text-signal { color: var(--signal); }
   .text-brick { color: var(--brick); }
+  .text-amber { color: var(--amber); }
   .text-slate { color: var(--slate); }
   .bg-signal { background: var(--signal); }
   .bg-signal-soft { background: var(--signal-soft); }
   .border-line { border-color: var(--line); }
   .bg-card { background: var(--card); }
   .bg-paper-raised { background: var(--paper-raised); }
+
+  .grain {
+    position: fixed; inset: 0; pointer-events: none; z-index: 1;
+    opacity: 0.05; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .tag-signal { border-color: var(--signal); color: var(--signal); }
+  .tag-amber { border-color: var(--amber); color: var(--amber); }
+  .tag-brick { border-color: var(--brick); color: var(--brick); }
 
   .eyebrow {
     font-family: 'IBM Plex Mono', monospace;
@@ -101,22 +118,19 @@
 
   .nav-link {
     position: relative;
+    display: inline-block;
     font-family: 'IBM Plex Mono', monospace;
+    font-weight: 500;
     font-size: 0.78rem;
     letter-spacing: 0.06em;
     color: var(--slate);
-    transition: color 0.2s ease;
+    transform-origin: left center;
+    transition: color 0.3s ease, transform 0.4s cubic-bezier(.34,1.56,.64,1);
   }
-  .nav-link:hover { color: var(--ink); }
-  .nav-link::after {
-    content: '';
-    position: absolute;
-    left: 0; bottom: -4px;
-    width: 0; height: 1px;
-    background: var(--signal);
-    transition: width 0.25s ease;
+  .nav-link:hover {
+    color: var(--brick);
+    transform: scale(1.35);
   }
-  .nav-link:hover::after { width: 100%; }
 
   .btn-primary {
     background: var(--ink);
@@ -167,19 +181,6 @@
     background-size: 18px 18px;
   }
 
-  .hero-glow {
-    position: absolute;
-    width: 600px; height: 600px;
-    background: radial-gradient(circle, var(--signal-soft) 0%, transparent 70%);
-    filter: blur(40px);
-    animation: drift 12s ease-in-out infinite alternate;
-    pointer-events: none;
-  }
-  @keyframes drift {
-    0% { transform: translate(-5%, -5%) scale(1); }
-    100% { transform: translate(5%, 5%) scale(1.15); }
-  }
-
   .stat-num {
     font-variant-numeric: tabular-nums;
   }
@@ -188,6 +189,7 @@
 </style>
 </head>
 <body class="antialiased">
+<div class="grain"></div>
 
 <!-- NAV -->
 <header class="sticky top-0 z-50 bg-paper/90 backdrop-blur border-b border-line">
@@ -227,7 +229,6 @@
 <!-- HERO -->
 <section id="home" class="relative overflow-hidden">
   <div class="absolute inset-0 dot-grid opacity-40 pointer-events-none"></div>
-  <div class="hero-glow -top-40 -left-20"></div>
 
   <svg class="absolute right-0 top-8 w-72 md:w-96 opacity-[0.14] pointer-events-none hidden sm:block" viewBox="0 0 320 260" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M20 220 L20 20" stroke="var(--ink)" stroke-width="1.5"/>
@@ -247,13 +248,13 @@
   <div class="max-w-5xl mx-auto px-6 pt-20 pb-16 md:pt-28 md:pb-20 relative">
     <div class="grid md:grid-cols-[1fr_auto] gap-12 items-center">
       <div>
-        <p class="eyebrow mb-3">BUSINESS ANALYTICS &amp; AI · DALLAS–FORT WORTH</p>
+        <p class="eyebrow mb-3">BUSINESS ANALYTICS &amp; AI · OPEN TO RELOCATE</p>
         <p class="font-display text-xl md:text-2xl font-medium text-slate mb-2">Yugandhari Lakshmi Narayanam</p>
         <h1 class="font-display text-4xl sm:text-5xl md:text-6xl font-semibold leading-[1.08] tracking-tight mb-6">
-          I turn messy data into decisions people actually act on.
+          I turn messy data into decisions people act on.
         </h1>
         <p class="text-lg text-slate max-w-xl mb-8 leading-relaxed">
-          UT Dallas Business Analytics &amp; AI graduate, Cum Laude. I build the dashboards, pricing models, and go-to-market analysis that sit underneath a good business decision. Then I explain the "so what" to the people making it.
+          UT Dallas Business Analytics &amp; AI graduate, Cum Laude. I build the dashboards, pricing models, and go-to-market work behind a real decision, and explain why it's the right one.
         </p>
 
         <div class="flex items-center gap-2 font-mono text-xs mb-9 text-slate">
@@ -268,8 +269,8 @@
       </div>
 
       <div class="justify-self-center">
-        <div class="w-40 h-40 md:w-48 md:h-48 rounded-full bg-card border border-line flex items-center justify-center relative">
-          <span class="font-display text-5xl font-semibold text-signal">YN</span>
+        <div class="w-40 h-40 md:w-48 md:h-48 rounded-full overflow-hidden border border-line relative">
+          <img src="profile.jpg" alt="Yugandhari Narayanam" class="w-full h-full object-cover">
           <div class="absolute -bottom-2 -right-2 bg-signal text-white text-xs font-mono px-2.5 py-1 rounded-full">OPEN</div>
         </div>
       </div>
@@ -301,38 +302,34 @@
 <!-- ABOUT -->
 <section id="about" class="border-t border-line">
   <div class="max-w-5xl mx-auto px-6 py-20 md:py-24">
-    <p class="eyebrow mb-3 reveal">ABOUT</p>
-    <div class="grid md:grid-cols-[1.1fr_0.9fr] gap-12">
-      <div class="reveal">
-        <h2 class="font-display text-3xl font-semibold mb-6 leading-snug">A quick read on how I work.</h2>
-        <p class="text-slate leading-relaxed">
-          I'm a Business Analytics &amp; AI graduate from UT Dallas, Cum Laude with a 3.67 GPA and a Finance &amp; Risk Analytics concentration. I've built competitive intelligence matrices for a pre-launch security startup, audited a 524,950-row retail dataset before trusting any of its numbers, and modeled churn and demand forecasts against real historical data. I work in SQL and Python, then explain what I found to whoever has to make the call.
-        </p>
-      </div>
+    <p class="eyebrow mb-6 reveal">ABOUT</p>
+    <div class="reveal mb-16 max-w-3xl">
+      <p class="font-display text-3xl sm:text-4xl md:text-5xl font-semibold leading-[1.15] tracking-tight">I help companies bring their ideas to market.</p>
+      <p class="font-display text-3xl sm:text-4xl md:text-5xl font-semibold leading-[1.15] tracking-tight mt-6 text-slate">I love digging into data, building models, and figuring out the smartest next move for a launch or a big decision.</p>
+    </div>
 
-      <div class="reveal">
-        <div class="mb-7">
-          <p class="font-mono text-xs text-slate mb-3 tracking-wide">DATA &amp; ANALYSIS</p>
-          <div class="flex flex-wrap gap-2">
-            <span class="tag">SQL</span><span class="tag">Python</span><span class="tag">R</span>
-            <span class="tag">Excel (VBA, DAX)</span><span class="tag">ETL/ELT</span>
-            <span class="tag">A/B Testing</span><span class="tag">Statistical Testing</span>
-          </div>
+    <div class="grid md:grid-cols-3 gap-8 reveal">
+      <div>
+        <p class="font-mono text-xs mb-3 tracking-wide text-signal">DATA &amp; ANALYSIS</p>
+        <div class="flex flex-wrap gap-2">
+          <span class="tag tag-signal">SQL</span><span class="tag tag-signal">Python</span><span class="tag tag-signal">R</span>
+          <span class="tag tag-signal">Excel (VBA, DAX)</span><span class="tag tag-signal">ETL/ELT</span>
+          <span class="tag tag-signal">A/B Testing</span><span class="tag tag-signal">Statistical Testing</span>
         </div>
-        <div class="mb-7">
-          <p class="font-mono text-xs text-slate mb-3 tracking-wide">VISUALIZATION &amp; TOOLS</p>
-          <div class="flex flex-wrap gap-2">
-            <span class="tag">Tableau</span><span class="tag">Power BI</span><span class="tag">Alteryx</span>
-            <span class="tag">Databricks</span><span class="tag">Visio</span><span class="tag">Claude</span>
-          </div>
+      </div>
+      <div>
+        <p class="font-mono text-xs mb-3 tracking-wide text-amber">VISUALIZATION &amp; TOOLS</p>
+        <div class="flex flex-wrap gap-2">
+          <span class="tag tag-amber">Tableau</span><span class="tag tag-amber">Power BI</span><span class="tag tag-amber">Alteryx</span>
+          <span class="tag tag-amber">Databricks</span><span class="tag tag-amber">Visio</span><span class="tag tag-amber">Claude</span>
         </div>
-        <div>
-          <p class="font-mono text-xs text-slate mb-3 tracking-wide">BUSINESS ACUMEN</p>
-          <div class="flex flex-wrap gap-2">
-            <span class="tag">Market Sizing (TAM/SAM/SOM)</span><span class="tag">Competitive Intelligence</span>
-            <span class="tag">Go-To-Market Strategy</span><span class="tag">Risk Management</span>
-            <span class="tag">Stakeholder Communication</span>
-          </div>
+      </div>
+      <div>
+        <p class="font-mono text-xs mb-3 tracking-wide text-brick">BUSINESS ACUMEN</p>
+        <div class="flex flex-wrap gap-2">
+          <span class="tag tag-brick">Market Sizing (TAM/SAM/SOM)</span><span class="tag tag-brick">Competitive Intelligence</span>
+          <span class="tag tag-brick">Go-To-Market Strategy</span><span class="tag tag-brick">Risk Management</span>
+          <span class="tag tag-brick">Stakeholder Communication</span>
         </div>
       </div>
     </div>
@@ -362,7 +359,7 @@
 <section id="projects" class="border-t border-line bg-paper-raised">
   <div class="max-w-5xl mx-auto px-6 py-20 md:py-24">
     <p class="eyebrow mb-3 reveal">PROJECTS</p>
-    <h2 class="font-display text-3xl font-semibold mb-12 reveal">Things I've actually built.</h2>
+    <h2 class="font-display text-3xl font-semibold mb-12 reveal">Things I've built.</h2>
 
     <div class="grid sm:grid-cols-2 gap-5">
 
@@ -536,7 +533,7 @@
     <div class="grid md:grid-cols-[1fr_1.1fr] gap-12">
       <div class="reveal">
         <h2 class="font-display text-3xl font-semibold mb-5 leading-snug">Let's talk about a role.</h2>
-        <p class="text-slate leading-relaxed mb-8">Open to full-time opportunities across the DFW area and remote. Best way to reach me is email. I'll get back within a day or two.</p>
+        <p class="text-slate leading-relaxed mb-8">Open to full-time opportunities anywhere in the U.S. Best way to reach me is email. I'll get back within a day or two.</p>
 
         <div class="space-y-4">
           <a href="mailto:narayanamyugandhari@gmail.com" class="flex items-center gap-3 group">
